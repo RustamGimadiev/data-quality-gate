@@ -205,9 +205,9 @@ resource "aws_cloudfront_distribution" "reports" {
   tags = var.tags
 
   viewer_certificate {
-    cloudfront_default_certificate = var.certificate_arn == "" ? true : false
+    cloudfront_default_certificate = var.certificate_arn == "" ? false : true
     acm_certificate_arn            = var.certificate_arn == "" ? null : var.certificate_arn
-    ssl_support_method             = "sni-only"
+    ssl_support_method             = var.certificate_arn == "" ? null : "sni-only"
   }
 
   web_acl_id = var.cloudfront_acl
