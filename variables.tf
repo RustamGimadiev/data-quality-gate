@@ -161,3 +161,9 @@ variable "cloudfront_cnames" {
   default     = []
   description = "List of CNAMEs for CloudFront distribution"
 }
+
+variable "cloudfront_acl" {
+  type        = string
+  default     = ""
+  description = "ACL for CloudFront distribution"
+}

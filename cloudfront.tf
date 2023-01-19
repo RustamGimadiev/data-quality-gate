@@ -209,4 +209,6 @@ resource "aws_cloudfront_distribution" "reports" {
     acm_certificate_arn            = var.certificate_arn == "" ? null : var.certificate_arn
     ssl_support_method             = "sni-only"
   }
+
+  web_acl_id = var.cloudfront_acl
 }
