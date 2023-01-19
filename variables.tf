@@ -16,12 +16,6 @@ variable "slack_webhook_url" {
   description = "The Slack webhook url, which will be used to send notification if some errors will be found it datasets"
 }
 
-variable "cognito_user_pool_id" {
-  type        = string
-  default     = null
-  description = "If you already has Cognito user pool which will be used for authentication, you could provide Cognito user pool id here. If it not provided, new Cognito user pool will be created"
-}
-
 variable "tags" {
   type        = map(string)
   default     = null
@@ -69,10 +63,10 @@ variable "expectations_store" {
   default     = "expectations_store"
 }
 
-variable "cloudfront_allowed_subnets" {
-  type        = list(string)
-  default     = null
-  description = "list of allowed subnets, suitable if you wan't use Cognito and allow users to get reports from specific IP address spaces"
+variable "create_cloudfront" {
+  type        = bool
+  description = "Create CloudFront distribution"
+  default     = true
 }
 
 variable "cloudfront_location_restrictions" {
@@ -129,4 +123,41 @@ variable "cloudfront_distribution_enabled" {
   type        = bool
   default     = true
   description = "Enable CloudFront distribution"
+}
+
+variable "cloudfront_additional_cache_behaviors" {
+  type = list(object({
+    path_pattern     = string
+    allowed_methods  = list(string)
+    cached_methods   = list(string)
+    target_origin_id = optional(string)
+    forwarded_values = object({
+      query_string = bool
+      cookies = object({
+        forward = string
+      })
+    })
+    lambda_function_associations = list(object({
+      event_type = string
+      lambda_arn = string
+    }))
+    viewer_protocol_policy = string
+    min_ttl                = number
+    default_ttl            = number
+    max_ttl                = number
+    compress               = bool
+  }))
+  default = []
+}
+
+variable "certificate_arn" {
+  type        = string
+  default     = null
+  description = "ARN of the certificate for CloudFront distribution"
+}
+
+variable "cloudfront_cnames" {
+  type        = list(string)
+  default     = []
+  description = "List of CNAMEs for CloudFront distribution"
 }
