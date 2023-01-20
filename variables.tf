@@ -131,21 +131,10 @@ variable "cloudfront_additional_cache_behaviors" {
     allowed_methods  = list(string)
     cached_methods   = list(string)
     target_origin_id = optional(string)
-    forwarded_values = object({
-      query_string = bool
-      cookies = object({
-        forward = string
-      })
-    })
     lambda_function_associations = list(object({
       event_type = string
       lambda_arn = string
     }))
-    viewer_protocol_policy = string
-    min_ttl                = number
-    default_ttl            = number
-    max_ttl                = number
-    compress               = bool
   }))
   default = []
 }

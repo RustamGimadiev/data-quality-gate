@@ -165,7 +165,7 @@ resource "aws_cloudfront_distribution" "reports" {
       path_pattern     = ordered_cache_behavior.value.path_pattern
       allowed_methods  = ordered_cache_behavior.value.allowed_methods
       cached_methods   = ordered_cache_behavior.value.cached_methods
-      target_origin_id = local.resource_name_prefix
+      target_origin_id = coalesce(ordered_cache_behavior.value.target_origin_id, local.resource_name_prefix)
 
       forwarded_values {
         query_string = false
